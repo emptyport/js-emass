@@ -1,5 +1,6 @@
-# Peptide Cutter
-A library for *in silico* proteolytic digestion of proteins and peptides.
+# js-emass
+
+## This is a WIP
 
 View on npm [here](https://www.npmjs.com/package/js-emass).
 
