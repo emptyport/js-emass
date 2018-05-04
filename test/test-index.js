@@ -1,5 +1,5 @@
 var should = require('chai').should();
-var emass = require('../index');
+var emass = require('../index').default;
 
 describe('Default Values', function() {
   defaultValues = new peptideCutter();

@@ -1,89 +1,143 @@
-module.exports = class emass {
-  constructor(options = {}) {
-    // These are the default values. They will
-    // be overwritten by anything passed in 
-    // through the options
-    this.enzyme = 'trypsin';
-    this.num_missed_cleavages = 0;
-    this.min_length = 8;
-    this.max_length = 30;
+var isoAbund = require('isotope-abundances');
 
-    if(options.enzyme !== undefined) {
-      this.enzyme = options.enzyme;
-      if(expasy_rules[this.enzyme] === undefined) {
-        console.log("Invalid enzyme. Defaulting to trypsin");
-        this.enzyme = 'trypsin';
-      }
-    }
-    this.regex = new RegExp(expasy_rules[this.enzyme], "g");
-
-    if(options.num_missed_cleavages !== undefined) {
-      this.num_missed_cleavages = options.num_missed_cleavages;
-      if(this.num_missed_cleavages < 0) {
-        console.log("The number of missed cleavages can't be less than 0. Defaulting to 0");
-        this.num_missed_cleavages = 0;
-      }
-    }
-
-    if(options.min_length !== undefined) {
-      this.min_length = options.min_length;
-    }
-    if(options.max_length !== undefined) {
-      this.max_length = options.max_length;
-    }
-    if(this.min_length > this.max_length) {
-      console.log("The min_length cannot be greater than the max_length. Defaulting to 8 and 30");
-      this.min_length = 8;
-      this.max_length = 30;
-    }
+module.exports =  class emass {
+  constructor() {
+    
   }
 
-  uniqueFilter(value, index, self) {
-    return self.indexOf(value) === index;
+  print_list(l) {
+    var out = "";
+    for(var i=0; i<l.length; i++) {
+      out += JSON.stringify(l[i]);
+    }
+    return out;
   }
 
-  cleave(sequence) {
-    sequence = sequence.toUpperCase();
-    var peptides = [];
-    var num_missed = this.num_missed_cleavages;
-
-    // Gather the cleavage sites
-    var indices = [0];
-    var m;
-    do {
-      m = this.regex.exec(sequence);
-      if (m) {
-        indices.push(m.index + 1);
-      }
-    } while (m);
-    indices.push(sequence.length);
-
-    // If there are only 3 cleavage sites there
-    // is no reason to allow more than 3 missed
-    // cleavages
-    if(indices.length < num_missed) {
-      num_missed = indices.length;
+  create_atom_list(isotopes) {
+    var atom_list = [];
+    for(var i=0; i<isotopes.length; i++) {
+      atom_list.push({'Mass':isotopes[i].Mass, 'Abundance':isotopes[i].Abundance})
     }
-
-    for(var i=0; i<indices.length; i++) {
-      for(var j=i; j<indices.length; j++) {
-        if(j-i-1 > num_missed) {
-          break;
-        }
-        var start_index = indices[i];
-        var end_index = indices[j];
-        if(start_index === end_index) {
-          continue;
-        }
-        if(end_index - start_index >= this.min_length && end_index - start_index <= this.max_length) {
-          peptides.push(sequence.substring(start_index, end_index));
-        }
-      }
-    }
-
-    peptides = peptides.filter(this.uniqueFilter);
-
-    return peptides;
+    return atom_list;
   }
 
+  prune(f, limit) {
+    var prune = [];
+    var counter = 0;
+
+    for(var i=0; i<f.length; i++) {
+      var peak = f[i];
+      if(peak.Abundance > limit) {
+        break;
+      }
+      prune.push(counter);
+      counter++;
+    }
+
+    counter = f.length - 1;
+
+    for(var i=f.length-1; i>=0; i--) {
+      var peak = f[i];
+      if(peak.Abundance > limit) {
+        break;
+      }
+      prune.push(counter);
+      counter--;
+    }
+
+    prune = [...new Set(prune)];
+    prune = prune.sort();
+    prune = prune.reverse();
+
+    for(var i=0; i<prune.length; i++) {
+      f.splice(prune[i], 1);
+    }
+
+    return f;
+    
+  }
+
+  convolute(g, f) {
+    console.log('g '+this.print_list(g));
+    console.log('f '+this.print_list(f));
+    var h = [];
+    var g_n = g.length;
+    var f_n = f.length;
+    if(g_n === 0 || f_n === 0) {
+      return h;
+    }
+    for(var k=0; k<g_n+f_n-1; k++) {
+      var sumweight = 0;
+      var summass = 0;
+      var start;
+      var end;
+
+      if(k < f_n-1) { start = 0; }
+      else { start = k-f_n+1; }
+
+      if(k < g_n-1) { end = k; }
+      else { end = g_n - 1; }
+
+      for(var i=start; i<end+1; i++) {
+        var weight = g[i].Abundance * f[k-i].Abundance;
+        var mass = g[i].Mass + f[k-i].Mass;
+        sumweight += weight;
+        summass += weight * mass;
+      }
+
+      var p;
+      if(sumweight === 0) {
+        p = {'Mass':-1, 'Abundance':sumweight};
+      }
+      else {
+        p = {'Mass':summass/sumweight, 'Abundance':sumweight};
+      }
+      h.push(p)
+    }
+
+    return h;
+
+  }
+
+  calculate(tmp, result, formula, limit, charge) {
+    for (var element in formula) {
+      if (formula.hasOwnProperty(element)) {
+
+        var n = parseInt(formula[element]);
+        var j = 0;
+        var atom_list = [this.create_atom_list(isoAbund(element).Isotopes)];
+
+        while(n > 0) {
+          console.log('n: '+n);
+          console.log('j: '+j);
+          var size = atom_list.length;
+          if(j === size) {
+            atom_list.push([]);
+            atom_list[j] = this.convolute(atom_list[j-1], atom_list[j-1]);
+            console.log('before prune: '+this.print_list(atom_list));
+            //atom_list = this.prune(atom_list[j], limit)
+            console.log('after prune: '+this.print_list(atom_list));
+          }
+          if(n & 1) {
+            console.log('result '+this.print_list(result));
+            console.log('elem '+this.print_list(atom_list[j]));
+            tmp = this.convolute(result, atom_list[j]);
+            //atom_list = this.prune(tmp, limit);
+            console.log('==========');
+            var swap = tmp;
+            tmp = result;
+            result = swap;
+            console.log('tmp '+this.print_list(tmp));
+            console.log('result '+this.print_list(result));
+            console.log('==========');
+          }
+          n = (n >> 1);
+          j++;
+        }
+
+      }
+    }
+    return result;
+  }
+  
 }

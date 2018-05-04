@@ -26,7 +26,10 @@
     "chai": "^4.0.1",
     "mocha": "^3.4.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "isotope-abundances": "^2.0.1",
+    "molecular-formula": "^1.1.1"
+  },
   "directories": {
     "test": "test"
   }
