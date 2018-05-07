@@ -12,7 +12,7 @@ npm install js-emass --save
 
 
 ## About
-
+Original paper: https://www.sciencedirect.com/science/article/pii/S1044030505010160
 
 ### Available enzymes
 
