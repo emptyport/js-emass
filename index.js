@@ -25,9 +25,12 @@ module.exports =  class emass {
     var prune = [];
     var counter = 0;
 
+    var goodPeaks = []
+
     for(var i=0; i<f.length; i++) {
       var peak = f[i];
       if(peak.Abundance > limit) {
+        goodPeaks.push(peak);
         break;
       }
       prune.push(counter);
@@ -54,12 +57,10 @@ module.exports =  class emass {
     }
 
     return f;
-    
+    //return goodPeaks;
   }
 
   convolute(g, f) {
-    console.log('g '+this.print_list(g));
-    console.log('f '+this.print_list(f));
     var h = [];
     var g_n = g.length;
     var f_n = f.length;
@@ -108,28 +109,18 @@ module.exports =  class emass {
         var atom_list = [this.create_atom_list(isoAbund(element).Isotopes)];
 
         while(n > 0) {
-          console.log('n: '+n);
-          console.log('j: '+j);
           var size = atom_list.length;
           if(j === size) {
             atom_list.push([]);
             atom_list[j] = this.convolute(atom_list[j-1], atom_list[j-1]);
-            console.log('before prune: '+this.print_list(atom_list));
-            //atom_list = this.prune(atom_list[j], limit)
-            console.log('after prune: '+this.print_list(atom_list));
+            atom_list[j] = this.prune(atom_list[j], limit)
           }
           if(n & 1) {
-            console.log('result '+this.print_list(result));
-            console.log('elem '+this.print_list(atom_list[j]));
             tmp = this.convolute(result, atom_list[j]);
-            //atom_list = this.prune(tmp, limit);
-            console.log('==========');
+            atom_list[j] = this.prune(tmp, limit);
             var swap = tmp;
             tmp = result;
             result = swap;
-            console.log('tmp '+this.print_list(tmp));
-            console.log('result '+this.print_list(result));
-            console.log('==========');
           }
           n = (n >> 1);
           j++;
