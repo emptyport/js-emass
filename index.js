@@ -51,12 +51,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var isoAbund = require('isotope-abundances');
 
 module.exports =  class emass {
-  constructor() {
-    this.limit = 1E-10;
-    this.customIsotopes = {};
+  constructor(options) {
     this.ELECTRON = .00054858;
-    this.abundance_decimals = 8;
-    this.mass_decimals = 6;
+
+    this.limit = this.opt(options, 'limit', 1E-10);
+    this.customIsotopes = this.opt(options, 'customIsotopes', {});
+    this.abundance_decimals = this.opt(options, 'abundanceDecimals', 8);
+    this.mass_decimals = this.opt(options, 'massDecimals', 6);
+    this.cutoff = this.opt(options, 'cutoff', 0.0001);
+  }
+
+  // From here https://stackoverflow.com/questions/23577632/optional-arguments-in-nodejs-functions
+  opt(options, name, default_value){
+    return options && options[name]!==undefined ? options[name] : default_value;
   }
 
   addCustomIsotopes(element, isotopes) {
@@ -65,8 +72,28 @@ module.exports =  class emass {
     };
   }
 
+  clearCustomIsotopes() {
+    this.customIsotopes = {};
+  }
+
+  deleteCustomIsotopes(element) {
+    delete this.customIsotopes[element];
+  }
+
   setPruneLimit(limit) {
     this.limit = limit;
+  }
+
+  setCutoff(cutoff) {
+    this.cutoff = cutoff;
+  }
+
+  setAbundanceDecimals(abundance_decimals) {
+    this.abundance_decimals = abundance_decimals;
+  }
+
+  setMassDecimals(mass_decimals) {
+    this.mass_decimals = mass_decimals;
   }
 
   print_list(l) {
@@ -85,7 +112,7 @@ module.exports =  class emass {
 
     var multiplicator = Math.pow(10, digits);
     n = parseFloat((n * multiplicator).toFixed(11));
-    return (Math.round(n) / multiplicator).toFixed(digits);
+    return parseFloat((Math.round(n) / multiplicator).toFixed(digits));
   }
 
   create_atom_list(isotopes) {
@@ -241,8 +268,15 @@ module.exports =  class emass {
     }
 
     result = this.normalize(result);
+
+    var filtered_result = [];
+    for(var i=0; i<result.length; i++) {
+      if(result[i].Abundance >= this.cutoff) {
+        filtered_result.push(result[i]);
+      }
+    }
     
-    return result;
+    return filtered_result;
   }
   
 }

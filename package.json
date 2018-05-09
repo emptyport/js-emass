@@ -4,7 +4,7 @@
   "description": "A JS implementation of the Emass algorithm",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --harmony"
+    "test": "node ./test/test-index.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +23,7 @@
   },
   "homepage": "https://github.com/emptyport/js-emass#readme",
   "devDependencies": {
-    "chai": "^4.0.1",
-    "mocha": "^3.4.2"
+    "tape": "^4.9.0"
   },
   "dependencies": {
     "isotope-abundances": "^2.0.1",
