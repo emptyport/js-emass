@@ -30,7 +30,7 @@ var emass = new emass_lib();
       }
   ]);*/
 
-  emass.addCustomIsotopes('C', [
+  /*emass.addCustomIsotopes('C', [
     {
       "Mass": 12.0000000,
       "Abundance": 0.988930
@@ -40,9 +40,10 @@ var emass = new emass_lib();
       "Abundance": 0.011070
     }
   ]);
-
-  emass.setPruneLimit(0);
+*/
+emass.setPruneLimit(0);
   
+console.log(formula.composition);
 isotopomers = emass.calculate(formula.composition, 0);
 
 for(var i=0; i<isotopomers.length; i++) {

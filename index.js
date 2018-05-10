@@ -197,6 +197,9 @@ module.exports =  class emass {
       if(k < g_n-1) { end = k; }
       else { end = g_n - 1; }
 
+      console.log('start '+start+' : end '+end);
+
+
       for(var i=start; i<end+1; i++) {
         var weight = g[i].Abundance * f[k-i].Abundance;
         var mass = g[i].Mass + f[k-i].Mass;
@@ -248,6 +251,7 @@ module.exports =  class emass {
             var swap = tmp;
             tmp = result;
             result = swap;
+            //console.log(this.print_list(result));
           }
           n = (n >> 1);
           j++;
