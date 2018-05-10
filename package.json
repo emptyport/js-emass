@@ -4,7 +4,7 @@
   "description": "A JS implementation of the Emass algorithm",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/test-index.js"
+    "test": "node ./test/test-index.js | tap-spec"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/emptyport/js-emass#readme",
   "devDependencies": {
+    "tap-spec": "^4.1.1",
     "tape": "^4.9.0"
   },
   "dependencies": {

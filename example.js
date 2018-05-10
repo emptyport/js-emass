@@ -1,10 +1,10 @@
 var emass_lib = require("./index");
 var molFormula = require('molecular-formula');
 
-var formula = new molFormula('H2O');
+var formula = new molFormula('C100');
 
 var emass = new emass_lib();
-emass.addCustomIsotopes('H', [
+/*emass.addCustomIsotopes('H', [
     {
       "Mass": 1.0078246,
       "Abundance": 0.99985
@@ -13,9 +13,9 @@ emass.addCustomIsotopes('H', [
       "Mass": 2.0141021,
       "Abundance": 0.00015
     }
-  ]);
+  ]);*/
 
-  emass.addCustomIsotopes('O', [
+  /*emass.addCustomIsotopes('O', [
     {
       "Mass": 15.9949141,
       "Abundance": 0.997590
@@ -28,13 +28,27 @@ emass.addCustomIsotopes('H', [
         "Mass": 17.9991616,
         "Abundance": 0.002036
       }
+  ]);*/
+
+  emass.addCustomIsotopes('C', [
+    {
+      "Mass": 12.0000000,
+      "Abundance": 0.988930
+    },
+    {
+      "Mass": 13.0033554,
+      "Abundance": 0.011070
+    }
   ]);
 
+  emass.setPruneLimit(0);
+  
 isotopomers = emass.calculate(formula.composition, 0);
 
 for(var i=0; i<isotopomers.length; i++) {
     console.log('Mass: '+isotopomers[i].Mass+', Abundance: '+isotopomers[i].Abundance);
 }
+
 
 
 
