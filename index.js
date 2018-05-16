@@ -140,48 +140,20 @@ module.exports =  class emass {
   }
 
   prune(f) {
-    var prune = [];
-    var counter = 0;
-
-    var goodPeaks = []
-
+    var good_peaks = [];
     for(var i=0; i<f.length; i++) {
-      var peak = f[i];
-      if(peak.Abundance > this.limit) {
-        goodPeaks.push(peak);
-        break;
+      if (f[i].Abundance >= this.limit) {
+        good_peaks.push(f[i]);
       }
-      prune.push(counter);
-      counter++;
     }
-
-    counter = f.length - 1;
-
-    for(var i=f.length-1; i>=0; i--) {
-      var peak = f[i];
-      if(peak.Abundance > this.limit) {
-        break;
-      }
-      prune.push(counter);
-      counter--;
-    }
-
-    prune = [...new Set(prune)];
-    prune = prune.sort();
-    prune = prune.reverse();
-
-    for(var i=0; i<prune.length; i++) {
-      f.splice(prune[i], 1);
-    }
-
-    return f;
-    //return goodPeaks;
+    return good_peaks;
   }
 
   convolute(g, f) {
     var h = [];
     var g_n = g.length;
     var f_n = f.length;
+
     if(g_n === 0 || f_n === 0) {
       return h;
     }
@@ -196,9 +168,6 @@ module.exports =  class emass {
 
       if(k < g_n-1) { end = k; }
       else { end = g_n - 1; }
-
-      console.log('start '+start+' : end '+end);
-
 
       for(var i=start; i<end+1; i++) {
         var weight = g[i].Abundance * f[k-i].Abundance;
@@ -222,7 +191,6 @@ module.exports =  class emass {
   }
 
   calculate(formula, charge) {
-    var tmp = [];
     var result = [{'Mass':0,'Abundance':1}];
     for (var element in formula) {
       if (formula.hasOwnProperty(element)) {
@@ -244,15 +212,13 @@ module.exports =  class emass {
             atom_list.push([]);
             atom_list[j] = this.convolute(atom_list[j-1], atom_list[j-1]);
             atom_list[j] = this.prune(atom_list[j])
+
           }
           if(n & 1) {
-            tmp = this.convolute(result, atom_list[j]);
-            atom_list[j] = this.prune(tmp);
-            var swap = tmp;
-            tmp = result;
-            result = swap;
-            //console.log(this.print_list(result));
+            result = this.convolute(result, atom_list[j]);
+            result = this.prune(result);           
           }
+          
           n = (n >> 1);
           j++;
         }
