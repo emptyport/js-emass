@@ -1,6 +1,6 @@
 {
   "name": "js-emass",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A JS implementation of the emass algorithm",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/emptyportjs-emass.git"
+    "url": "git+https://github.com/emptyport/js-emass.git"
   },
   "keywords": [
     "mass",
