@@ -140,13 +140,15 @@ module.exports =  class emass {
   }
 
   prune(f) {
-    var good_peaks = [];
-    for(var i=0; i<f.length; i++) {
-      if (f[i].Abundance >= this.limit) {
-        good_peaks.push(f[i]);
-      }
+    while(f[0].Abundance < this.limit) {
+      f.shift();
     }
-    return good_peaks;
+
+    while(f[f.length-1].Abundance < this.limit) {
+      f.pop();
+    }
+
+    return f;
   }
 
   convolute(g, f) {
