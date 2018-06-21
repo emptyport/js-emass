@@ -21,7 +21,7 @@ var options = {
   }
 };
 
-var emass = new emass_lib(options);
+var emass = new emass_lib();
 
 /*emass.addCustomIsotopes('H', [
   {
@@ -34,7 +34,7 @@ var emass = new emass_lib(options);
   }
 ]);*/
 console.log(emass);
-var formula = new molFormula('H2O');
+var formula = new molFormula('C100');
 var isotopes = emass.calculate(formula.composition, 0);
 console.log(isotopes);
 
@@ -43,6 +43,7 @@ console.log(isotopes);
 console.log(formula.composition);
 isotopomers = emass.calculate(formula.composition, 0);
 
+console.log('==========');
 for(var i=0; i<isotopomers.length; i++) {
     console.log('Mass: '+isotopomers[i].Mass+', Abundance: '+isotopomers[i].Abundance);
 }

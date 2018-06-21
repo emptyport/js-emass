@@ -35,6 +35,17 @@ for(var i=0; i<isotopomers.length; i++) {
     console.log('Mass: '+isotopomers[i].Mass+', Abundance: '+isotopomers[i].Abundance);
 }
 ```
+Output:
+```
+Mass: 1200, Abundance: 0.92457944
+Mass: 1201.003355, Abundance: 1
+Mass: 1202.00671, Abundance: 0.53537855
+Mass: 1203.010065, Abundance: 0.18915663
+Mass: 1204.013419, Abundance: 0.04961227
+Mass: 1205.016774, Abundance: 0.01030258
+Mass: 1206.020129, Abundance: 0.00176431
+Mass: 1207.023484, Abundance: 0.00025625
+```
 
 ### Functions
 #### addCustomIsotopes(c, [])
@@ -159,3 +170,7 @@ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
 CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+## Support this project!
+
+[![Support this project on Patreon!](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/MikeTheBiochem)
