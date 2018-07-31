@@ -192,7 +192,7 @@ module.exports =  class emass {
 
   }
 
-  calculate(formula, charge) {
+  calculate(formula, charge=0) {
     var result = [{'Mass':0,'Abundance':1}];
     for (var element in formula) {
       if (formula.hasOwnProperty(element)) {

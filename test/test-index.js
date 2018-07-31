@@ -5,7 +5,7 @@ var test = require('tape');
 test('Default Settings', function(t) {
   var emass = new emass_lib();
   var formula = new molFormula('H2O');
-  var isotopes = emass.calculate(formula.composition, 0);
+  var isotopes = emass.calculate(formula.composition);
 
   t.equal(isotopes.length, 3, 'Number of peaks');
   t.equal(isotopes[0].Mass, 18.010565, 'm0 correct');
@@ -21,7 +21,7 @@ test('Can change prune limit', function(t) {
   var emass = new emass_lib();
   var formula = new molFormula('H2O');
   emass.setPruneLimit(0.1);
-  var isotopes = emass.calculate(formula.composition, 0);
+  var isotopes = emass.calculate(formula.composition);
   t.equal(emass.limit, 0.1, 'Prune limit was changed');
   t.equal(isotopes.length, 1, 'Prune limit affects output');
   t.end();
@@ -57,7 +57,7 @@ test('Custom isotopes', function(t) {
       }
   ]);
 
-  var custom_isotopes = custom_isotope_emass.calculate(formula.composition, 0);
+  var custom_isotopes = custom_isotope_emass.calculate(formula.composition);
 
   t.equal(custom_isotopes.length, 3, 'Correct number of peaks');
   t.equal(custom_isotopes[0].Mass, 18.010563, 'm0 correct');
@@ -69,7 +69,7 @@ test('Custom isotopes', function(t) {
 
   custom_isotope_emass.deleteCustomIsotopes('O');
 
-  custom_isotopes = custom_isotope_emass.calculate(formula.composition, 0);
+  custom_isotopes = custom_isotope_emass.calculate(formula.composition);
 
   t.equal(custom_isotope_emass.customIsotopes['O'], undefined, 'O was removed');
   t.equal(custom_isotopes[1].Mass, 19.015689, 'm1 correct');
@@ -84,7 +84,7 @@ test('Can change cutoff', function(t) {
   var emass = new emass_lib();
   var formula = new molFormula('H2O');
   emass.setCutoff(0.1);
-  var isotopes = emass.calculate(formula.composition, 0);
+  var isotopes = emass.calculate(formula.composition);
 
   t.equal(emass.cutoff, 0.1, 'Cutoff limit was changed');
   t.equal(isotopes.length, 1, 'Cutoff limit affects output');
@@ -96,7 +96,7 @@ test('Can set significant figures', function(t) {
   var formula = new molFormula('H2O');
   emass.setAbundanceDecimals(3);
   emass.setMassDecimals(4);
-  var isotopes = emass.calculate(formula.composition, 0);
+  var isotopes = emass.calculate(formula.composition);
 
   t.equal(isotopes.length, 3, 'Number of peaks');
   t.equal(isotopes[0].Mass, 18.0106, 'm0 correct');
@@ -160,7 +160,7 @@ test('Matches original emass output', function(t) {
   emass.setPruneLimit(0);
   emass.setCutoff(0.00000001);
 
-  var isotopes = emass.calculate(formula.composition, 0);
+  var isotopes = emass.calculate(formula.composition);
   t.equal(isotopes[44].Mass, 120097.325474, 'm44 correct');
   t.equal(isotopes[44].Abundance, 0.43597577, 'i44 correct');
   t.end();
@@ -190,7 +190,7 @@ test('Options work', function(t) {
 
   var emass = new emass_lib(options);
   var formula = new molFormula('H2O');
-  var isotopes = emass.calculate(formula.composition, 0);
+  var isotopes = emass.calculate(formula.composition);
 
   t.equal(0.01, emass.cutoff, 'Cutoff was set');
   t.equal(1E-18, emass.limit, 'Prune limit was set');

@@ -1,8 +1,16 @@
 # js-emass
 
-The original paper can be found [here](https://www.sciencedirect.com/science/article/pii/S1044030505010160) and I strongly recommend taking a look at the paper to better understand how the algorithm works.
+[![Build Status](https://travis-ci.org/emptyport/js-emass.svg?branch=master)](https://travis-ci.org/emptyport/js-emass)
+[![codecov](https://codecov.io/gh/emptyport/js-emass/branch/master/graph/badge.svg)](https://codecov.io/gh/emptyport/js-emass)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This implementation is functionally identical to the original emass but it will provide slightly different values because it is using the isotope data from [here](https://github.com/emptyport/isotope-abundances). You can, however, provide custom mass/abundance information. If you use the isotope information from the original emass, this module will give the same output.
+
+
+js-emass is a module for quickly and accurately calculating the isotopic envelope of a molecule.
+
+I strongly recommend checking out the [original paper](https://www.sciencedirect.com/science/article/pii/S1044030505010160) for a better understand of how the algorithm works.
+
+This implementation is functionally identical to the original emass, but it will provide slightly different values because this version is using the isotope data from [the isotope-abundances module](https://github.com/emptyport/isotope-abundances) which are more current than the values used in the original paper. You can, however, provide custom mass/abundance information. If you use the isotope information from the original emass, this module will give the same output.
 
 #### Useful links:
 * The original emass site - http://www.helsinki.fi/science/lipids/software.html
@@ -11,7 +19,7 @@ This implementation is functionally identical to the original emass but it will 
 * A modified Python implementation - https://github.com/JC-Price/DeuteRater
   * The core algorithm is the same as the original, but it has been integrated into a larger package that deals with peptides rather than molecular formula. 
 
-View this module on npm [here](https://www.npmjs.com/package/js-emass).
+View this module on [npm](https://www.npmjs.com/package/js-emass).
 
 ## Installation
 npm install js-emass --save
@@ -48,6 +56,23 @@ Mass: 1207.023484, Abundance: 0.00025625
 ```
 
 ### Functions
+#### calculate(formula, charge)
+This function will return a list of the various peaks. The formula must be an object where each key is the elemental symbol and the value is the number of atoms. For example, water would be ```{'H':2, 'O':1}```. The charge is optional and by default is assumed to be 0.
+
+You will get in return a list of mass and abundance pair objects. For C100, the returned data would look like:
+```
+[ { Mass: 1200, Abundance: 0.92457944 },
+  { Mass: 1201.003355, Abundance: 1 },
+  { Mass: 1202.00671, Abundance: 0.53537855 },
+  { Mass: 1203.010065, Abundance: 0.18915663 },
+  { Mass: 1204.013419, Abundance: 0.04961227 },
+  { Mass: 1205.016774, Abundance: 0.01030258 },
+  { Mass: 1206.020129, Abundance: 0.00176431 },
+  { Mass: 1207.023484, Abundance: 0.00025625 } ]
+```
+
+The abundances are normalized to the tallest peak.
+
 #### addCustomIsotopes(c, [])
 This function allows you to add custom masses/relative abundances for each element. The first argument is the elemental symbol and the second element is an array of Mass/Abundance objects.
 ```javascript
