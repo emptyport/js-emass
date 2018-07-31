@@ -1,10 +1,10 @@
 language: node_js
 node_js:
- - "node"
+  - "node"
 install:
-  -npm install -g codecov
+  - npm install -g codecov
 script:
-  -istanbul cover test/test-index.js --reporter lcovonly -- -R spec
-  -codecov
+  - istanbul cover test/test-index.js --reporter lcovonly -- -R spec
+  - codecov
 after_success:
-- bash < (curl -s https://codecov.io/bash)
+  - bash < (curl -s https://codecov.io/bash)
