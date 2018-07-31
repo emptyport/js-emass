@@ -4,7 +4,7 @@ node_js:
 install:
   - npm install -g codecov istanbul
 script:
+  - npm test
+after_success:
   - istanbul cover test/test-index.js --reporter lcovonly -- -R spec
   - codecov
-after_success:
-  - bash < (curl -s https://codecov.io/bash)
