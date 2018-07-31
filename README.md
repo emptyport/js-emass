@@ -91,7 +91,7 @@ emass.addCustomIsotopes('H', [
 #### deleteCustomIsotope(c)
 This function allows you to selectively delete any custom isotopes you may have added. This function accepts an elemental symbol as an argument.
 ```javascript
-emass.deleteCustomIsotopes('H');
+emass.deleteCustomIsotope('H');
 ```
 
 #### clearCustomIsotopes()
