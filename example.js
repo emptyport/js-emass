@@ -1,6 +1,6 @@
 var emass_lib = require("./index");
 var molFormula = require('molecular-formula');
-var options = {
+/*var options = {
   'cutoff': 0.01,
   'limit': 1E-18, // This is the prune limit
   'abundanceDecimals': 4,
@@ -19,34 +19,38 @@ var options = {
       ]
     }
   }
-};
+};*/
 
-var emass = new emass_lib();
+var emassNatural = new emass_lib();
+var emassLabelled = new emass_lib();
 
-/*emass.addCustomIsotopes('H', [
+emassLabelled.addCustomIsotopes('C', [
   {
-    "Mass": 1.0078246,
-    "Abundance": 0.99985
+    "Mass": 12,
+    "Abundance": 0.8893
   },
   {
-    "Mass": 2.0141021,
-    "Abundance": 0.00015
+    "Mass": 13.00335483507,
+    "Abundance": 0.1107
   }
-]);*/
-console.log(emass);
-var formula = new molFormula('C100');
-var isotopes = emass.calculate(formula.composition, 0);
-console.log(isotopes);
+]);
+
+var formula = new molFormula('C10');
+var isotopesNatural = emassNatural.calculate(formula.composition, 0);
+console.log(isotopesNatural);
+
+var isotopesLabelled = emassLabelled.calculate(formula.composition, 0);
+console.log(isotopesLabelled);
 
 
   
-console.log(formula.composition);
+/*console.log(formula.composition);
 isotopomers = emass.calculate(formula.composition, 0);
 
 console.log('==========');
 for(var i=0; i<isotopomers.length; i++) {
     console.log('Mass: '+isotopomers[i].Mass+', Abundance: '+isotopomers[i].Abundance);
-}
+}*/
 
 
 

@@ -67,7 +67,7 @@ test('Custom isotopes', function(t) {
   t.equal(custom_isotopes[1].Abundance, 0.00067495, 'i1 correct');
   t.equal(custom_isotopes[2].Abundance, 0.00204105, 'i2 correct');
 
-  custom_isotope_emass.deleteCustomIsotopes('O');
+  custom_isotope_emass.deleteCustomIsotope('O');
 
   custom_isotopes = custom_isotope_emass.calculate(formula.composition);
 

@@ -1,0 +1,23 @@
+{
+  "@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": [
+    {
+      "@id": "0000-0002-1148-6603",
+      "@type": "Person",
+      "email": "michaelporter.chemistry@gmail.com",
+      "name": "Michael Porter",
+      "affiliation": "UT Southwestern Medical Center"
+    }
+  ],
+  "identifier": "",
+  "codeRepository": "https://github.com/emptyport/js-emass",
+  "datePublished": "2018-07-31",
+  "dateModified": "2018-07-31",
+  "dateCreated": "2018-07-31",
+  "description": "js-emass is a module for quickly and accurately calculating the isotopic envelope of a molecule",
+  "keywords": "mass, emass, isotope",
+  "license": "MIT",
+  "title": "js-emass",
+  "version": "v1.2.3"
+}

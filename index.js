@@ -76,7 +76,7 @@ module.exports =  class emass {
     this.customIsotopes = {};
   }
 
-  deleteCustomIsotopes(element) {
+  deleteCustomIsotope(element) {
     delete this.customIsotopes[element];
   }
 

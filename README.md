@@ -57,7 +57,7 @@ Mass: 1207.023484, Abundance: 0.00025625
 
 ### Functions
 #### calculate(formula, charge)
-This function will return a list of the various peaks. The formula must be an object where each key is the elemental symbol and the value is the number of atoms. For example, water would be ```{'H':2, 'O':1}```. The charge is optional and by default is assumed to be 0.
+This function will return a list of the various peaks. The formula must be an object where each key is the elemental symbol and the value is the number of atoms. For example, water would be ```{'H':2, 'O':1}```. If you are starting with a string representation of a formula, you can use the [molecular-formula module](https://github.com/emptyport/molecular-formula) to easily obtain the object representation. The charge is optional and by default is assumed to be 0.
 
 You will get in return a list of mass and abundance pair objects. For C100, the returned data would look like:
 ```
@@ -88,7 +88,7 @@ emass.addCustomIsotopes('H', [
   ]);
 ```
 
-#### deleteCustomIsotopes(c)
+#### deleteCustomIsotope(c)
 This function allows you to selectively delete any custom isotopes you may have added. This function accepts an elemental symbol as an argument.
 ```javascript
 emass.deleteCustomIsotopes('H');
