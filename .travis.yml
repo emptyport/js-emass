@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "node"
 install:
-  - npm install -g codecov
+  - npm install -g codecov istanbul
 script:
   - istanbul cover test/test-index.js --reporter lcovonly -- -R spec
   - codecov
