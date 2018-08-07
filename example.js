@@ -37,8 +37,11 @@ emassLabelled.addCustomIsotopes('C', [
 
 var formula = new molFormula('C10');
 var isotopesNatural = emassNatural.calculate(formula.composition, 0);
+console.log("Natural isotopic envelope");
 console.log(isotopesNatural);
 
+console.log("\n");
+console.log("Labelled isotopic envelope");
 var isotopesLabelled = emassLabelled.calculate(formula.composition, 0);
 console.log(isotopesLabelled);
 

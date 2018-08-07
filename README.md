@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/emptyport/js-emass.svg?branch=master)](https://travis-ci.org/emptyport/js-emass)
 [![codecov](https://codecov.io/gh/emptyport/js-emass/branch/master/graph/badge.svg)](https://codecov.io/gh/emptyport/js-emass)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![status](http://joss.theoj.org/papers/cbc6dcaf1110a965cc8c4f1efc6a0963/status.svg)](http://joss.theoj.org/papers/cbc6dcaf1110a965cc8c4f1efc6a0963)
 
 
 
@@ -22,11 +23,14 @@ This implementation is functionally identical to the original emass, but it will
 View this module on [npm](https://www.npmjs.com/package/js-emass).
 
 ## Installation
-npm install js-emass --save
+`npm install js-emass --save`
+
+Additionally you can run `npm install molecular-formula --save` to be able to directly convert a formula such as "H2O" to the correct format for js-emass.
 
 ## Usage
 
 ### Quickstart
+You can run the following commands interactively in the terminal by running `node` and then typing the commands, or you can place everything in a file called `script.js` for example and run it with `node script.js`. This requires that [Node.js](https://nodejs.org) be installed on your system.
 ```javascript
 var emass_lib = require('js-emass');
 var molFormula = require('molecular-formula');
@@ -45,6 +49,8 @@ for(var i=0; i<isotopomers.length; i++) {
 ```
 Output:
 ```
+{ C: 100 }
+
 Mass: 1200, Abundance: 0.92457944
 Mass: 1201.003355, Abundance: 1
 Mass: 1202.00671, Abundance: 0.53537855
@@ -54,6 +60,60 @@ Mass: 1205.016774, Abundance: 0.01030258
 Mass: 1206.020129, Abundance: 0.00176431
 Mass: 1207.023484, Abundance: 0.00025625
 ```
+
+### Stable Isotope Labelling Example
+```javascript
+var emass_lib = require("js-emass");
+var molFormula = require('molecular-formula');
+
+var emassNatural = new emass_lib();
+var emassLabelled = new emass_lib();
+
+// Here we are adjusting our naturally occurring ratios.
+// In a rough sense we are taking one out of every 10 12C atoms and replacing it with a 13C atom.
+emassLabelled.addCustomIsotopes('C', [
+  {
+    "Mass": 12,
+    "Abundance": 0.8893
+  },
+  {
+    "Mass": 13.00335483507,
+    "Abundance": 0.1107
+  }
+]);
+
+var formula = new molFormula('C10');
+
+var isotopesNatural = emassNatural.calculate(formula.composition, 0);
+console.log("Natural isotopic envelope");
+console.log(isotopesNatural);
+
+console.log("\n");
+console.log("Labelled isotopic envelope");
+var isotopesLabelled = emassLabelled.calculate(formula.composition, 0);
+console.log(isotopesLabelled);
+```
+
+Output
+```
+Natural isotopic envelope
+[ { Mass: 120, Abundance: 1 },
+  { Mass: 121.003355, Abundance: 0.10815728 },
+  { Mass: 122.00671, Abundance: 0.0052641 },
+  { Mass: 123.010065, Abundance: 0.00015183 } ]
+
+
+Labelled isotopic envelope
+[ { Mass: 120, Abundance: 0.80334237 },
+  { Mass: 121.003355, Abundance: 1 },
+  { Mass: 122.00671, Abundance: 0.56015968 },
+  { Mass: 123.010065, Abundance: 0.18594303 },
+  { Mass: 124.013419, Abundance: 0.04050581 },
+  { Mass: 125.016774, Abundance: 0.00605059 },
+  { Mass: 126.020129, Abundance: 0.00062765 } ]
+```
+A comparison of the distributions can be seen below. Using our example, one might add <sup>13</sup>C to their culture media to bring the relative abundance of <sup>13</sup>C to about 10%, then sample their cells at differing timepoints. Before labelling, a C10 molecule (which isn't going to be in your cells, but that we are using in this example) would have an isotopic envelope like our natural distribution in the graph below. A fully labelled C10 molecule would look like our labelled molecule below. By interpolating between the two states (e.g. calculating the isotopic envelope at 50 intervals between natural and fully labelled), one can calculate the rate at which <sup>13</sup>C is being incorporated into our molecule.
+![Graph of C10 natural abundance vs 10% C13 enrichment](resources/graph.jpg)
 
 ### Functions
 #### calculate(formula, charge)
@@ -153,6 +213,14 @@ var emass = new emass_lib(options);
 
 ## Tests
 You can run `npm test` to run the tests after installing the development dependencies.
+
+## Contributing
+If you would like to contribute to js-emass, feel free to clone the repository, make your changes on a separate branch, and submit a pull request once all your tests are passing. Any new functionality will need to have corresponding tests to ensure everything is working as expected. [Travis-CI integration](https://travis-ci.org/emptyport/js-emass) is set up for this repository so all tests will be run automatically anytime you push your branch.
+
+## Issues/Support
+If you encounter any issues with js-emass, you can [file an issue](https://github.com/emptyport/js-emass/issues) here on Github. If your issue matches a currently open issue, feel free to add on to the existing issue rather than create a new issue. Helpful pieces of information will be your version of node (`node -v`), your version of npm (`npm -v`), and the version of js-emass (which can be found in your package.json or with `npm list`). Additionally, the script/program/piece of code you are having issues with would be much appreciated.
+
+If you find you need help using js-emass, you can either [file an issue](https://github.com/emptyport/js-emass/issues) with your question, or you can find my email in the [package.json](https://github.com/emptyport/js-emass/blob/master/package.json) file.
 
 ## Future functionality
 No future functionality is planned.
