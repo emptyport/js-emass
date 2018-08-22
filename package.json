@@ -1,6 +1,6 @@
 {
   "name": "js-emass",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "A JS implementation of the emass algorithm",
   "main": "index.js",
   "scripts": {

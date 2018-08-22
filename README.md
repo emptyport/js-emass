@@ -4,6 +4,7 @@
 [![codecov](https://codecov.io/gh/emptyport/js-emass/branch/master/graph/badge.svg)](https://codecov.io/gh/emptyport/js-emass)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![status](http://joss.theoj.org/papers/cbc6dcaf1110a965cc8c4f1efc6a0963/status.svg)](http://joss.theoj.org/papers/cbc6dcaf1110a965cc8c4f1efc6a0963)
+[![DOI](https://zenodo.org/badge/131650407.svg)](https://zenodo.org/badge/latestdoi/131650407)
 
 
 
@@ -19,6 +20,8 @@ This implementation is functionally identical to the original emass, but it will
 * A partial Ruby implementation - https://github.com/princelab/ruby-emass
 * A modified Python implementation - https://github.com/JC-Price/DeuteRater
   * The core algorithm is the same as the original, but it has been integrated into a larger package that deals with peptides rather than molecular formula. 
+
+> This implementation has been accepted for publication in the [Journal of Open Source Software!](http://joss.theoj.org/papers/cbc6dcaf1110a965cc8c4f1efc6a0963)
 
 View this module on [npm](https://www.npmjs.com/package/js-emass).
 
